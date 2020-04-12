@@ -5,7 +5,7 @@ from sqlalchemy import Column, String, Float, Date, Integer, Sequence
 from sqlalchemy.ext.declarative import declarative_base
 
 
-
+import tushare_get
 
 
 print(sqlalchemy.__version__) 
@@ -52,17 +52,47 @@ class Grade(Base):
     def __repr__(self):
         return "<User(name='%d')>" % (self.id,)
 
-class sql_ops:      
-    def __init__ ( self ):
-        # 数据库连接:
-        mysql_engine = create_engine("mysql://lee:1234@localhost/tudb")
-        Base.metadata.create_all(mysql_engine)
+class sql_ops:
+    print("class sql_ops");        
+    # 数据库连接:
+    mysql_engine = create_engine("mysql://lee:1234@localhost/tudb")
+    Base.metadata.create_all(mysql_engine)
 
-        # 创建DBSession类型:
-        DBSession = sessionmaker(bind=mysql_engine)
-        session = DBSession()
-    def add_grade(self):
-        
+    # 创建DBSession类型:
+    DBSession = sessionmaker(bind=mysql_engine)
+    session = DBSession()
+    def __init__ ( self ):
+        pass
+    def add_grade(self,date,p,n):
+        grd = Grade(id=int(date),
+            p0 = p[0 ], 
+            p1 = p[1 ],
+            p2 = p[2 ],
+            p3 = p[3 ],
+            p4 = p[4 ],
+            p5 = p[5 ],
+            p6 = p[6 ],
+            p7 = p[7 ],
+            p8 = p[8 ],
+            p9 = p[9 ],
+            p10 =p[10],
+            p11 =p[11],
+            n1 = n[1 ],
+            n2 = n[2 ],
+            n3 = n[3 ],
+            n4 = n[4 ],
+            n5 = n[5 ],
+            n6 = n[6 ],
+            n7 = n[7 ],
+            n8 = n[8 ],
+            n9 = n[9 ],
+            n10 =n[10],
+            n11 =n[11],
+        )
+        sql_ops.session.add(grd)
+        sql_ops.session.commit()
+
+
 
 '''
 # session 
@@ -81,4 +111,11 @@ our_user = session.query(User).filter_by(name='fred').first()
 print(our_user)
 '''
 
+sql = sql_ops();
 
+dt = tushare_get.get_date(start_date='20150101', end_date='20150401');
+print(dt)
+for date in dt:
+    [p,n] = tushare_get.get_grade(date)
+    print(p,n)
+    sql.add_grade(date,p,n)

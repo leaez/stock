@@ -19,8 +19,8 @@ def get_daily( ts_code='', trade_date='', start_date='', end_date=''):
             return df
 
 
-def get_date(exchange='SSE', start_date='20200101', end_date='20200401'):
-    df = pro.trade_cal(exchange='SSE', is_open='1', start_date='20200101', end_date='20200401', 
+def get_date(exchange='', start_date='20200101', end_date='20200401'):
+    df = pro.trade_cal(exchange='', is_open='1', start_date=start_date, end_date=end_date, 
         fields='cal_date') 
     for date in df['cal_date'].values:
         print(date)
@@ -29,8 +29,8 @@ def get_date(exchange='SSE', start_date='20200101', end_date='20200401'):
 #df = ts.get_hist_data('600848')
 #df = ts.get_hist_data('600848',start='2020-02-25',end='2017-10-25')
 
-def get_grade():
-    pct_change_arr = get_daily(trade_date='20180810')
+def get_grade(date='20180810'):
+    pct_change_arr = get_daily(trade_date=date)
 
     changesP = [0,0,0,0,0,0,0,0,0,0,0,0]
     changesN = [0,0,0,0,0,0,0,0,0,0,0,0]
@@ -58,11 +58,23 @@ def get_grade():
         elif c>8 and c<=9:      changesP[9]+=1;
         elif c>9 and c<10:      changesP[10]+=1;
         elif c==10:             changesP[11]+=1;
-    print( changesP)
-    print( changesN)
+    #print( changesP)
+    #print( changesN)
     return [changesP,changesN]
 
+def get_szindex(start_date='20180101', end_date='20181011'):
+    df = ts.pro_bar(ts_code='000001.SH', asset='E', start_date=start_date, end_date=end_date)
+    print(df)
+
+
+#df = ts.get_hist_data('sz',ktype='D',  start='20150105')
+df = ts.get_h_data('sz', autype=None, start='2015-01-01', end='2015-03-16')
+print(df)
 #dt = datetime(2018, 1, 1)
-dt = get_date();
-print(type(1+ int(dt[0])))
+#dt = get_date(start_date='20000101', end_date='20200401');
+#print(type(1+ int(dt[0])))
+
+#
+#grade = get_grade()
+#print(grade)
 
