@@ -37,8 +37,8 @@ def stock_api() -> str:
 def url_126(year=2020,code='0000001') -> str:
     return "http://img1.money.126.net/data/hs/kline/day/history/{}/{}.json".format(year,code)
 
-def url_sohu(code=cn_300228,start=20130930,end=20131231) -> str:
-    return "http://q.stock.sohu.com/hisHq?code={}&start={}&end={}&stat=1&order=D&period=d&callback=historySearchHandler&rt=jsonp".format(code,start,end)
+def url_sohu(code='cn_300228',start='20130930',end='20131231') -> str:
+    return "http://q.stock.sohu.com/hisHq?code={}&start={}&end={}&stat=1&order=D&period=d&rt=json".format(code,start,end)
 
 headers = {
     "Accept-Encoding": "gzip, deflate, sdch",
@@ -70,5 +70,6 @@ def get_126data(year = 2020,code = '0000001'):
 
 def get_sohu_data():
     r = session.get(url_sohu(), headers=headers)
-
-get_data()
+    data = json.loads(r.text)
+    print(data)
+get_sohu_data()
